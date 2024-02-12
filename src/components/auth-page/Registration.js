@@ -31,7 +31,7 @@ export const signupSchema = yup.object().shape({
 });
 const Registration = () => {
     const [registration,{isLoading}] = useRegistrationMutation();
-    const [registrationConfirmation, ] = useRegistrationConfirmationMutation();
+    const [registrationConfirmation ] = useRegistrationConfirmationMutation();
 
     const [isError,setIsError]=useState()
     const navigate = useNavigate();

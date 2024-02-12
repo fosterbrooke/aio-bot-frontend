@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import s from './Auth.module.css'
 import Input from "../common/input/Input";
 import logo from '../../assets/img/logo.png'
@@ -6,40 +6,50 @@ import Button from "../common/button/Button";
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup"
-import {useSendCodeMutation} from "../../scripts/api/auth-api";
+import {useRegistrationConfirmationMutation, useSendCodeMutation} from "../../scripts/api/auth-api";
 import {useSelector} from "react-redux";
 import {selectEmailVerify} from "../../scripts/store/slices/app/selectors";
 import ProgressBar from "../common/progress-bar/ProgressBar";
+import {setEmailVerify} from "../../scripts/store/slices/app/app-slices";
+import {useNavigate} from "react-router-dom";
 
-const schema = yup.object().shape({
-    verify: yup
-        .string()
-        .min(6, 'The code you entered is incorrect! Please try again or ask for a new verification code.')
-        .max(50, 'The code you entered is incorrect! Please try again or ask for a new verification code.')
-        .required('Required'),
-});
 
 const VerifyAccount = () => {
 
     const [sendCode,{isLoading}] = useSendCodeMutation();
+    const [registrationConfirmation ] = useRegistrationConfirmationMutation();
+
+    const [isError,setIsError]=useState()
+    const [code,setCode]=useState('')
+    const navigate = useNavigate();
+
     const email=useSelector(selectEmailVerify)
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
-        resolver: yupResolver(schema),
-    })
-    const onSubmit = async (data) => {
-        if(data){
-            console.log(data)
+    const onSubmit = async () => {
+        console.log('SUBMIT')
+        setIsError(false)
+        console.log(code)
+
+
             const res=await  sendCode({
                 email:email,
-                pin_code:data.verify
+                pin_code:code
             })
+            console.log(res)
+            console.log(isError)
+            if(res.error){
+                setIsError('The code you entered is incorrect! Please try again or ask for a new verification code.')
+                return
+            }
+            navigate('/chat');
 
         }
+
+    const resendCode=async ()=>{
+        setIsError(false)
+        const verify=await registrationConfirmation({
+            email:email
+        })
     }
 
     return (
@@ -57,28 +67,30 @@ const VerifyAccount = () => {
                     </p>
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className={s.content} >
+                <form className={s.content} >
 
                     <Input placeholder="Enter the verification code here"
                            text="Verification Code"
-                           error={errors.verify?.message}
-                           register={() => register('verify')}
+                           value={code}
+                           onChange={(e)=>setCode(e.target.value)}
                     />
+                    {isError&&<span style={{   color:'#F03C5C',fontWeight: 300}}>{isError}</span>}
+
                     {
-                        (errors.verify && errors.verify.message) && (
+                        (isError) && (
                             <Button
                                 text="Resend"
-                                error={(errors.verify && errors.verify.message)}
-                                type="submit"
+                                error={(isError)}
+                                type="button"
                                 style={{width:'200px'}}
-                                onClick={onSubmit}
+                                onClick={()=>resendCode()}
                             />
                         )
                     }
 
                     <Button text="Verify and continue"
-                            type="submit"
-                            onClick={onSubmit}
+                            type="button"
+                            onClick={()=>onSubmit()}
                     />
                 </form>
 
