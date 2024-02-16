@@ -4,9 +4,12 @@ import s from './Chat.module.css'
 import User from "./User";
 import {useSelector} from "react-redux";
 import {selectTheme} from "../../scripts/store/slices/app/selectors";
+import {selectMe} from "../../scripts/store/slices/chat/selectors";
 
 const LeftSidebar = () => {
     const theme=useSelector(selectTheme)
+    const me=useSelector(selectMe)
+
     return (
         <div className={`${s.container_sidebar} ${s[`container_sidebar_${theme}`]}`}>
             <img src={logo} className={s.logo}/>
@@ -16,7 +19,8 @@ const LeftSidebar = () => {
 
             </div>
             <div className={s.profile}>
-                <User isMenu={true}/>
+                {me&& <User isMenu={true} user={me}/>}
+
             </div>
         </div>
     );

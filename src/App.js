@@ -5,17 +5,21 @@ import "./assets/nucleo-icons.css";
 import Dashboard from "./components/chat-page/Dashboard";
 import Train from "./components/Train";
 import {createContext, useEffect, useState} from "react";
-import Login from "./components/auth-page/Login";
-import Registration from "./components/auth-page/Registration";
+import LoginPage from "./components/auth-page/LoginPage";
+import RegistrationPage from "./components/auth-page/RegistrationPage";
 import Footer from "./components/common/footer/Footer";
-import VerifyAccount from "./components/auth-page/VerifyAccount";
-import RecoveryPassword from "./components/auth-page/RecoveryPassword";
+import VerifyAccountPage from "./components/auth-page/VerifyAccountPage";
+import RecoveryPasswordPage from "./components/auth-page/RecoveryPasswordPage";
 import Home from "./components/home-page/Home";
-import ResetPassword from "./components/auth-page/ResetPassword";
+import ResetPassword from "./components/auth-page/ResetPasswordPage";
 import {getLocalStorage} from "./scripts/common/helpers/localStorage";
 import {useDispatch} from "react-redux";
 import {setIsAuth, setTheme} from "./scripts/store/slices/app/app-slices";
 import {useMeQuery} from "./scripts/api/auth-api";
+import {useGetUserQuery} from "./scripts/api/chat-api";
+import {setMe} from "./scripts/store/slices/chat/chat-slice";
+import InformPage from "./components/auth-page/InformPage";
+import {AuthRedirectLayout} from "./components/common/auth-redirect/AuthRedirect";
 export const DataContext = createContext();
 
 function App() {
@@ -23,51 +27,50 @@ function App() {
   const location = useLocation();
   const dispatch = useDispatch();
   const { isLoading, isSuccess, isError, data:auth } = useMeQuery();
-
-
+ const {data:user}=useGetUserQuery("005c00b4-c441-45af-9190-f94f23262db9", {enabled: isSuccess})
 
   const isChatPath = location?.pathname === '/chat';
 
   useEffect(()=>{
-    const theme= getLocalStorage('theme')
-    dispatch(setTheme(theme))
-    dispatch(setIsAuth())
-
-
-  },[])
-
-  useEffect(()=>{
 
     if (!isLoading) {
-      console.log('auth!')
-      console.log(data)
-      console.log(isSuccess)
-      dispatch(setIsAuth(auth));
+      dispatch(setIsAuth(auth))
     }
 
   },[isLoading, auth])
 
+  useEffect(()=>{
+    dispatch(setMe(user))
+  },[user])
+
+
+  useEffect(()=>{
+    const theme= getLocalStorage('theme')
+    dispatch(setTheme(theme))
+
+  },[])
+
+
 
   return (
     <DataContext.Provider value={{ data, setData }}>
- {/*     <Sidebar />*/}
-      <div className="App">
-       {/* <Header />*/}
-
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={auth ? <Navigate to="/" /> : <Login />} />
-          {/*<Route path="/chat"  element= {!auth ? <Navigate to="/login" /> : <Dashboard />}/>*/}
-          <Route path="/chat"  element= { <Dashboard />}/>
-          <Route path="/train" element={<Train />} />
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/registration" element={<Registration/>}/>
-          <Route path="/verify" element={<VerifyAccount/>}/>
-          <Route path="/recovery" element={<RecoveryPassword/>}/>
-          <Route path="/reset_password" element={<ResetPassword/>}/>
-        </Routes>
-        {!isChatPath && <Footer />}
-      </div>
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={ <LoginPage />} />
+            {/*<Route path="/login" element={auth ? <Navigate to="/" /> : <LoginPage />} />*/}
+            {/*<Route path="/chat"  element= {!auth ? <Navigate to="/login" /> : <Dashboard />}/>*/}
+            <Route path="/chat"  element= { <Dashboard />}/>
+            <Route path="/train" element={<Train />} />
+            <Route path="/login" element={<LoginPage/>}/>
+            <Route path="/registration" element={<RegistrationPage/>}/>
+            <Route path="/verify" element={<VerifyAccountPage/>}/>
+            <Route path="/recovery" element={<RecoveryPasswordPage/>}/>
+            <Route path="/reset_password" element={<ResetPassword/>}/>
+            <Route path="/inform" element={<InformPage/>}/>
+          </Routes>
+          {!isChatPath && <Footer />}
+        </div>
     </DataContext.Provider>
   );
 }

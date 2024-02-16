@@ -14,7 +14,7 @@ import {setEmailVerify} from "../../scripts/store/slices/app/app-slices";
 import {useNavigate} from "react-router-dom";
 
 
-const VerifyAccount = () => {
+const VerifyAccountPage = () => {
 
     const [sendCode,{isLoading}] = useSendCodeMutation();
     const [registrationConfirmation ] = useRegistrationConfirmationMutation();
@@ -41,7 +41,7 @@ const VerifyAccount = () => {
                 setIsError('The code you entered is incorrect! Please try again or ask for a new verification code.')
                 return
             }
-            navigate('/chat');
+            navigate('/login');
 
         }
 
@@ -103,4 +103,4 @@ const VerifyAccount = () => {
     );
 };
 
-export default VerifyAccount;
+export default VerifyAccountPage;

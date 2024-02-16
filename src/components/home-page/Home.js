@@ -7,15 +7,21 @@ import SideBar from "../common/sidebar/SideBar";
 import {useNavigate} from "react-router-dom";
 import {useMeQuery} from "../../scripts/api/auth-api";
 import ProgressBar from "../common/progress-bar/ProgressBar";
+import {useSelector} from "react-redux";
+import {selectIsAuth} from "../../scripts/store/slices/app/selectors";
 
 const Home = () => {
+    const isAuth=useSelector(selectIsAuth)
+
     const navigate = useNavigate();
-
-
     const handleButtonClick = () => {
-        navigate('/chat');
-
-
+        console.log(isAuth)
+        if(isAuth){
+            navigate('/chat');
+        }
+        else{
+            navigate('/login')
+        }
     };
     return (
         <div className={s.container}>

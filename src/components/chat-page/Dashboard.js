@@ -14,11 +14,14 @@ import { selectTheme} from "../../scripts/store/slices/app/selectors";
 import {useMeQuery} from "../../scripts/api/auth-api";
 import {useNavigate} from "react-router-dom";
 import ProgressBar from "../common/progress-bar/ProgressBar";
+import {selectMe} from "../../scripts/store/slices/chat/selectors";
 const Dashboard = () => {
   const BASE_URL = environment.BASE_URL;
   const [question, setQuestion] = useState("");
   const [isLoading,setIsLoading]=useState(false)
   const theme=useSelector(selectTheme)
+  const me=useSelector(selectMe)
+
   const navigate = useNavigate();
 
   const ref = useRef();
@@ -139,7 +142,7 @@ const Dashboard = () => {
                             </p>
 
                           </div>
-                          <User/>
+                          <User user={me}/>
                         </div>
 
                       </div>

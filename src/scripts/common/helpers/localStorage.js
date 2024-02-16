@@ -12,3 +12,7 @@ export const getLocalStorage = (key) => {
 export const clearLocalStorage = (key) => {
     localStorage.removeItem(key);
 };
+
+export const setCookie=()=>{
+
+}

@@ -29,7 +29,7 @@ export const signupSchema = yup.object().shape({
         .required('Confirm password is required')
         .oneOf([yup.ref('password')], 'The passwords do not match! Please try again.'),
 });
-const Registration = () => {
+const RegistrationPage = () => {
     const [registration,{isLoading}] = useRegistrationMutation();
     const [registrationConfirmation ] = useRegistrationConfirmationMutation();
 
@@ -150,4 +150,4 @@ const Registration = () => {
     );
 };
 
-export default Registration;
+export default RegistrationPage;

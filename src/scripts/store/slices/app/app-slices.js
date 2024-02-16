@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
-const appReducer = createSlice({
+const appSlice = createSlice({
     name: 'appReducer',
     initialState: {
         theme:'dark',
@@ -21,6 +21,6 @@ const appReducer = createSlice({
     },
 });
 
-export const { setTheme,setEmailVerify,setIsAuth } = appReducer.actions;
+export const { setTheme,setEmailVerify,setIsAuth } = appSlice.actions;
 
-export default appReducer.reducer;
+export default appSlice.reducer;

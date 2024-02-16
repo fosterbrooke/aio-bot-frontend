@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import appReducers from "./slices/app/app-slices";
 import {apiService} from "../instance/axiosBaseQuery";
+import chatSlice from "./slices/chat/chat-slice";
+import appSlices from "./slices/app/app-slices";
 
 
 const store = configureStore({
     reducer: {
-        app: appReducers,
+        app: appSlices,
+        chat:chatSlice,
         [apiService.reducerPath]: apiService.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiService.middleware),

@@ -17,7 +17,7 @@ const schema = yup.object().shape({
         .required('We couldn’t find an account associated with this email! Please try again'),
 });
 
-const RecoveryPassword = () => {
+const RecoveryPasswordPage = () => {
 
     const [recoveryPassword,{isLoading,isError:err}]=useRecoveryPasswordMutation()
 
@@ -41,7 +41,7 @@ const RecoveryPassword = () => {
                 setIsError(res.error.message)
                 return
             }
-            navigate('/reset_password');
+            navigate('/inform');
 
         }
     }
@@ -92,4 +92,4 @@ const RecoveryPassword = () => {
     );
 };
 
-export default RecoveryPassword;
+export default RecoveryPasswordPage;

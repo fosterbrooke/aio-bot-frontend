@@ -299,6 +299,7 @@ color: #F5F5F5;
     right: 380px;
     background: #ff6666;
     top: -50px;
+
 }
 .input_invite{
     position: absolute;
@@ -309,9 +310,8 @@ color: #F5F5F5;
     padding: 15px;
     outline: none;
     color: rgba(255, 255, 255, 0.75);
-    border: 1px solid;
-    border-image: linear-gradient(173deg, #FFFFFF, rgba(169, 99, 218, 0.22));
-    border-image-slice: 1;
+    font-size: 12px;
+
     width: 300px;
 
 
@@ -334,5 +334,6 @@ color: #F5F5F5;
     padding: 0 20px;
     height: 30px;
     width: 80px;
+    font-size: 12px;
 
 }

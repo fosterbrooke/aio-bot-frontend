@@ -5,7 +5,8 @@ import menu from '../../assets/img/menu.svg'
 import SettingsModal from "../common/modal/SettingsModal";
 import {useSelector} from "react-redux";
 import {selectTheme} from "../../scripts/store/slices/app/selectors";
-const User = ({isMenu}) => {
+
+const User = ({isMenu,user}) => {
 
     const [isMenuOpen,setIsMenuOpen]=useState(false)
     const [isOpenSettings,setIsOpenSettings]=useState(false)
@@ -21,7 +22,7 @@ const User = ({isMenu}) => {
         <div  className={`${s.user_container} ${s[`user_container_${theme}`]}`}>
             <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
                 <img src={avatar} className={s.img_avatar}/>
-                <p>Joe Doe</p>
+                <p>{user.username||user.email}</p>
             </div>
             {isMenu&&   <img src={menu} className={s.img_menu} onClick={()=>setIsMenuOpen(!isMenuOpen)} />}
             {isMenuOpen&&

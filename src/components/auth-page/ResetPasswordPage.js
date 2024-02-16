@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import s from "./Auth.module.css";
 import logo from "../../assets/img/logo.png";
 import Input from "../common/input/Input";
@@ -8,8 +8,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup"
 import {useNewPasswordMutation} from "../../scripts/api/auth-api";
 import ProgressBar from "../common/progress-bar/ProgressBar";
+import {useNavigate} from "react-router-dom";
 
-export const resetPassword = yup.object().shape({
+export const resetPasswordPage = yup.object().shape({
     password: yup.string()
         .required('Password is required')
         .min(8, 'The password must contain 8 to 40 characters! Please try again.')
@@ -22,21 +23,41 @@ export const resetPassword = yup.object().shape({
 const ResetPassword = () => {
 
     const [setNewPassword,{isLoading}] = useNewPasswordMutation();
+    const [code,setCode]=useState('')
+    const [email,setEmail]=useState('')
+    const navigate = useNavigate();
 
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm({
-        resolver: yupResolver(resetPassword),
+        resolver: yupResolver(resetPasswordPage),
     })
+
+    useEffect(() => {
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const pin = urlParams.get('code');
+        const email=urlParams.get('email')
+        setEmail(email)
+        setCode(pin)
+
+    }, [])
     const onSubmit = async (data) => {
         if(data){
-            await setNewPassword({
-
+            const res= await setNewPassword({
+                email:email,
+                pin_code:code,
                 new_password: data.password,
 
             }).unwrap();
+
+            if(res.error){
+                return
+            }
+            navigate('/login')
+
         }
     }
 
