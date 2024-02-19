@@ -45,6 +45,12 @@ export const authService = apiService
         data: data,
     }),
 }),
+            logout: build.query({
+            query: () => ({
+                method: 'GET',
+                url: '/auth/logout',
+            }),
+        }),
     newPassword: build.mutation({
     query: (data) => ({
                 method: 'POST',
@@ -60,6 +66,7 @@ export const authService = apiService
 
 export const {
     useMeQuery,
+    useLogoutQuery,
     useRegistrationMutation,
     useLoginMutation,
     useRecoveryPasswordMutation,

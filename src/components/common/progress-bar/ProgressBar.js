@@ -1,9 +1,9 @@
 import React from 'react';
 import s from './ProgressBar.module.css'
 import  loading from '../../../assets/img/loading.gif'
-const ProgressBar = () => {
+const ProgressBar = ({add_style}) => {
     return (
-        <div className={s.progress_container}>
+        <div style={add_style} className={s.progress_container}>
             <img className={s.loading} src={loading}/>
         </div>
     );

@@ -6,9 +6,8 @@ import sun from '../../assets/img/sun.svg'
 import {useDispatch, useSelector} from "react-redux";
 import {selectTheme} from "../../scripts/store/slices/app/selectors";
 import {setTheme} from "../../scripts/store/slices/app/app-slices";
-import {setLocalStorage} from "../../scripts/common/helpers/localStorage";
-import {useLoginMutation} from "../../scripts/api/auth-api";
-import {useSendInvitationMutation} from "../../scripts/api/chat-api";
+import {clearLocalStorage, setLocalStorage} from "../../scripts/common/helpers/localStorage";
+import { useSendInvitationMutation} from "../../scripts/api/chat-api";
 import {selectMe} from "../../scripts/store/slices/chat/selectors";
 const RightSidebar = () => {
     const [isOpen,setIsOpen]=useState(false)
@@ -18,6 +17,7 @@ const RightSidebar = () => {
     const me=useSelector(selectMe)
 
     const [sendInvitation,{ isLoading }] = useSendInvitationMutation();
+
     const dispatch = useDispatch();
     const changeTheme=(value)=>{
         dispatch(setTheme(value))
@@ -35,6 +35,7 @@ const RightSidebar = () => {
         setIsOpen(false)
 
     }
+
 
 
     return (

@@ -60,7 +60,7 @@ const LoginPage = () => {
                 setLocalStorage('access-token', res.data.access_token);
                 setCookies('refresh-token',res.data.refresh_token)
             }
-
+console.log('chat')
             navigate('/chat');
         }
 

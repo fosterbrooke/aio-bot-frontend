@@ -10,7 +10,7 @@ import pen from '../../assets/pen.gif'
 import red_like from '../../assets/img/red_like.svg'
 import RightSidebar from "./RightSidebar";
 import {useSelector} from "react-redux";
-import { selectTheme} from "../../scripts/store/slices/app/selectors";
+import {selectIsAuth, selectTheme} from "../../scripts/store/slices/app/selectors";
 import {useMeQuery} from "../../scripts/api/auth-api";
 import {useNavigate} from "react-router-dom";
 import ProgressBar from "../common/progress-bar/ProgressBar";
@@ -21,6 +21,8 @@ const Dashboard = () => {
   const [isLoading,setIsLoading]=useState(false)
   const theme=useSelector(selectTheme)
   const me=useSelector(selectMe)
+
+  const isAuth=useSelector(selectIsAuth)
 
   const navigate = useNavigate();
 
@@ -34,6 +36,10 @@ const Dashboard = () => {
   ]);
 
   useEffect(()=>{
+    console.log('CHAT')
+    if(isAuth){
+
+    }
 
   },[])
   const handleSend = async (e) => {
